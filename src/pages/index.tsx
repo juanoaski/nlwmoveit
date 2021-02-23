@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Inicio | move.it</title>
+        <title>Inicio | Move.it</title>
       </Head>
       <ExperienceBar />
       <section>
