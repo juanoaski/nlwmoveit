@@ -5,8 +5,8 @@ import styles from '../styles/components/Countdown.module.css'
 let countdownTimeout: NodeJS.Timeout;
 
 export function Countdown() {
-    const { startNewChallenge, hasFinishedChallenge, hasStartedChallenge } = useContext(ChallengesContext);
-    const [time, setTime] = useState(0.05 * 60);
+    const { startNewChallenge, hasFinishedChallenge, hasStartedChallenge, challengeFinished, challengeStarted } = useContext(ChallengesContext);
+    const [time, setTime] = useState(0.5 * 60);
     const [isActive, setIsActive] = useState(false);
     const [hasFinished, setHasFinished] = useState(false);
 
@@ -24,7 +24,7 @@ export function Countdown() {
     function resetCountdown() {
         clearTimeout(countdownTimeout);
         setIsActive(false);
-        setTime(0.05 * 60);
+        setTime(0.5 * 60);
     }
 
     useEffect(() => {
@@ -46,6 +46,16 @@ export function Countdown() {
     useEffect(() => {
         hasFinishedChallenge(hasFinished)
     }, [hasFinished])
+
+    useEffect(() => {
+        if (!challengeFinished && !challengeStarted) {
+            setIsActive(false);
+            setHasFinished(false);
+            resetCountdown();
+        }
+
+    }, [challengeFinished, challengeStarted])
+
 
     return (
         <div>

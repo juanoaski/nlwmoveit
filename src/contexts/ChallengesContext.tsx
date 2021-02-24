@@ -11,6 +11,7 @@ interface Challenge {
 
 interface ChallengesContextData {
     level: number;
+    experienceToNextLevel: number;
     currentExperience: number;
     challengesCompleted: number;
     challengeStarted: boolean;
@@ -20,6 +21,7 @@ interface ChallengesContextData {
     startNewChallenge: () => void;
     hasFinishedChallenge: (t: boolean) => void;
     hasStartedChallenge: (t: boolean) => void;
+    resetChallenge: () => void;
 }
 
 interface ChallengesProviderProps {
@@ -30,11 +32,13 @@ export const ChallengesContext = createContext({} as ChallengesContextData);
 
 export function ChallengesProvider({ children }: ChallengesProviderProps) {
     const [level, setLevel] = useState(1);
-    const [currentExperience, setCurrentExperience] = useState(0);
+    const [currentExperience, setCurrentExperience] = useState(18);
     const [challengesCompleted, setChallengesCompleted] = useState(0);
     const [challengeStarted, setChallengeStarted] = useState(false);
     const [challengeFinished, setChallengeFinished] = useState(false);
-    const [activeChallenge, setActiveChallenge] = useState(null)
+    const [activeChallenge, setActiveChallenge] = useState(null);
+
+    const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
 
     function levelUp() {
         setLevel(level + 1);
@@ -55,10 +59,17 @@ export function ChallengesProvider({ children }: ChallengesProviderProps) {
         setActiveChallenge(challenge);
     }
 
+    function resetChallenge() {
+        setActiveChallenge(null);
+        setChallengeFinished(false);
+        setChallengeStarted(false);
+    }
+
     return (
         <ChallengesContext.Provider value={
             {
                 level,
+                experienceToNextLevel,
                 currentExperience,
                 challengesCompleted,
                 challengeStarted,
@@ -67,7 +78,8 @@ export function ChallengesProvider({ children }: ChallengesProviderProps) {
                 levelUp,
                 startNewChallenge,
                 hasFinishedChallenge,
-                hasStartedChallenge
+                hasStartedChallenge,
+                resetChallenge
             }
         }>
             { children}
