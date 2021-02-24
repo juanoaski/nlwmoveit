@@ -68,4 +68,8 @@
 .countdownButton:disabled {
     background: var(--white);
     cursor: not-allowed;
+    border-bottom: 4px solid var(--green);
+}
+.countdownButton:disabled > img{
+    padding-left: 15px;
 }
